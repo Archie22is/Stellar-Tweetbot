@@ -2,20 +2,12 @@
 
 <?php
 
-// Insert absolute filepath to your twitteroauth.php script here - grab the twitteroauth folder from http://github.com/abraham/twitteroauth
-$twitter_oauth_path = '/{YOURFILEPATH}/twitteroauth/twitteroauth.php';
-
-// Insert absolute filepath where your cached feed file will go - can be the same directory as this script
-$cached_file_path = '/{YOURFILEPATH}/Stellar-Tweetbot/feed.xml';
-
-// Insert HTTP path to your Stellar.io XML/RSS file
-$feed_url = "http://stellar.io/{YOURUSERNAME}/flow/feed";
-
-// Insert your Twitter app credentials... you can create and get these at https://dev.twitter.com/apps
-$consumer_key = '{GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS}';
-$consumer_secret = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
-$access_token = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
-$access_token_secret = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
+if (file_exists(dirname(__FILE__) . '/stellar_tweetbot_config.php')) {
+  require_once(dirname(__FILE__) . '/stellar_tweetbot_config.php');
+}
+else {
+  exit;
+}
 
 require_once $twitter_oauth_path;
 
