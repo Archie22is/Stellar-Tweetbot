@@ -37,7 +37,7 @@ function getOldIDs () {
 function retweet() {
  
 
-	global $consumer_key, $consumer_secret, $access_token, $access_token_secret, $feed_url, $cached_file_path;
+	global $consumer_key, $consumer_secret, $access_token, $access_token_secret, $feed_url, $cached_file_path, $excludeID;
 	
 	$toa = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 	
@@ -53,13 +53,20 @@ function retweet() {
 		if ($entry->link->attributes()->href) {
 			$isreply = preg_match("/^@/i", (string)$entry->title); 
 			$urlstring = (string)$entry->link->attributes()->href;
-			if (!$isreply && preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
-				if (!in_array($matches[1], $oldIDArray)) {
-					print_r($toa->post('statuses/retweet/'.$matches[1]));
-				}
-			}
-		}
-	}
+          $urlstringparsed = parse_url($urlstring);
+          $urlstringparsepath = $urlstringparsed['path'];
+          $urlstringparsedpatharray = explode($urlstringparsedpath, '/');
+          $twitter_handle = $urlstringparsedpatharray[0];
+          $tweet_id = $urlstringparsedpatharray[2];
+          if (!$isreply && preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
+            if (!in_array($matches[1], $oldIDArray)) {
+              if (!in_array($twitter_handle, $excludeID)) {
+               print_r($toa->post('statuses/retweet/'.$matches[1]));
+              }
+           }
+          }
+        }
+      }		
 
 	$handle = fopen($cached_file_path, 'w');
 	fwrite($handle,$feedcontents);
