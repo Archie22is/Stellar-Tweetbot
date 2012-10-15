@@ -35,12 +35,11 @@ function getOldIDs () {
 
 // This function looks for new tweets and retweets them out
 function retweet() {
- 
 
 	global $consumer_key, $consumer_secret, $access_token, $access_token_secret, $feed_url, $cached_file_path, $excludeID;
-	
+
 	$toa = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
-	
+
 	$ch = curl_init($feed_url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	$feedcontents = curl_exec($ch);
@@ -75,6 +74,5 @@ function retweet() {
 }
 
 retweet();
-
 
 ?>
