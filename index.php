@@ -48,29 +48,29 @@ function retweet() {
 	$oldIDArray = getOldIDs();
 
 	$newxml = simplexml_load_string($feedcontents);
-	foreach($newxml->entry as $entry) {
-		if ($entry->link->attributes()->href) {
-			$isreply = preg_match("/^@/i", (string)$entry->title); 
-			$urlstring = (string)$entry->link->attributes()->href;
-          $urlstringparsed = parse_url($urlstring);
-          $urlstringparsedpath = $urlstringparsed['path'];
-          $urlstringparsedpatharray = explode($urlstringparsedpath, '/');
-          $twitter_handle = $urlstringparsedpatharray[0];
-          $tweet_id = $urlstringparsedpatharray[2];
-          if (!$isreply && preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
-            if (!in_array($matches[1], $oldIDArray)) {
-              if (!in_array($twitter_handle, $excludeIDs)) {
-               print_r($toa->post('statuses/retweet/'.$matches[1]));
-              }
-           }
+  if (isset($newxml->entry)) {
+	  foreach($newxml->entry as $entry) {
+	    if ($entry->link->attributes()->href) {
+	    	$isreply = preg_match("/^@/i", (string)$entry->title); 
+	    	$urlstring = (string)$entry->link->attributes()->href;
+        $urlstringparsed = parse_url($urlstring);
+        $urlstringparsedpath = $urlstringparsed['path'];
+        $urlstringparsedpatharray = explode($urlstringparsedpath, '/');
+        $twitter_handle = $urlstringparsedpatharray[0];
+        $tweet_id = $urlstringparsedpatharray[2];
+        if (!$isreply && preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
+          if (!in_array($matches[1], $oldIDArray)) {
+            if (!in_array($twitter_handle, $excludeIDs)) {
+              print_r($toa->post('statuses/retweet/'.$matches[1]));
+            }
           }
         }
-      }		
-
+      }
+    }		
+  }
 	$handle = fopen($cached_file_path, 'w');
 	fwrite($handle,$feedcontents);
 	fclose($handle);	
-
 }
 
 retweet();
