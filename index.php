@@ -53,7 +53,7 @@ function retweet() {
 			$isreply = preg_match("/^@/i", (string)$entry->title); 
 			$urlstring = (string)$entry->link->attributes()->href;
           $urlstringparsed = parse_url($urlstring);
-          $urlstringparsepath = $urlstringparsed['path'];
+          $urlstringparsedpath = $urlstringparsed['path'];
           $urlstringparsedpatharray = explode($urlstringparsedpath, '/');
           $twitter_handle = $urlstringparsedpatharray[0];
           $tweet_id = $urlstringparsedpatharray[2];
