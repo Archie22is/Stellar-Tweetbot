@@ -13,4 +13,4 @@ $consumer_secret = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
 $access_token = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
 $access_token_secret = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
 
-$excludeID = ''; // Insert an ID to exclude. This could be your Twitter handle, so as to not get autoretweeted by your own bot
+$excludeIDs = array(''); // Insert an ID to exclude. This could be your Twitter handle, so as to not get autoretweeted by your own bot. Separate each ID with a comma.

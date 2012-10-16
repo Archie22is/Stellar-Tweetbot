@@ -36,7 +36,7 @@ function getOldIDs () {
 // This function looks for new tweets and retweets them out
 function retweet() {
 
-	global $consumer_key, $consumer_secret, $access_token, $access_token_secret, $feed_url, $cached_file_path, $excludeID;
+	global $consumer_key, $consumer_secret, $access_token, $access_token_secret, $feed_url, $cached_file_path, $excludeIDs;
 
 	$toa = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
@@ -59,7 +59,7 @@ function retweet() {
           $tweet_id = $urlstringparsedpatharray[2];
           if (!$isreply && preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
             if (!in_array($matches[1], $oldIDArray)) {
-              if (!in_array($twitter_handle, $excludeID)) {
+              if (!in_array($twitter_handle, $excludeIDs)) {
                print_r($toa->post('statuses/retweet/'.$matches[1]));
               }
            }
@@ -74,5 +74,3 @@ function retweet() {
 }
 
 retweet();
-
-?>
