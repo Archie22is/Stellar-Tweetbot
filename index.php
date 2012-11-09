@@ -1,5 +1,3 @@
-#!/usr/local/php5/bin/php -q
-
 <?php
 
 if (file_exists(dirname(__FILE__) . '/stellar_tweetbot_config.php')) {
@@ -51,8 +49,8 @@ function retweet() {
   if (isset($newxml->entry)) {
 	  foreach($newxml->entry as $entry) {
 	    if ($entry->link->attributes()->href) {
-	    	$isreply = preg_match("/^@/i", (string)$entry->title); 
-	    	$urlstring = (string)$entry->link->attributes()->href;
+        $isreply = preg_match("/^@/i", (string)$entry->title); 
+        $urlstring = (string)$entry->link->attributes()->href;
         $urlstringparsed = parse_url($urlstring);
         $urlstringparsedpath = $urlstringparsed['path'];
         $urlstringparsedpatharray = explode($urlstringparsedpath, '/');
