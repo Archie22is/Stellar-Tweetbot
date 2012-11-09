@@ -53,8 +53,8 @@ function retweet() {
         $urlstring = (string)$entry->link->attributes()->href;
         $urlstringparsed = parse_url($urlstring);
         $urlstringparsedpath = $urlstringparsed['path'];
-        $urlstringparsedpatharray = explode($urlstringparsedpath, '/');
-        $twitter_handle = $urlstringparsedpatharray[0];
+        $urlstringparsedpatharray = explode('/', $urlstringparsedpath);
+        $twitter_handle = $urlstringparsedpatharray[1];
         $tweet_id = $urlstringparsedpatharray[2];
         if (!$isreply && preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
           if (!in_array($matches[1], $oldIDArray)) {
