@@ -56,11 +56,16 @@ function retweet() {
         $urlstringparsedpatharray = explode('/', $urlstringparsedpath);
         $twitter_handle = $urlstringparsedpatharray[1];
         $tweet_id = $urlstringparsedpatharray[2];
-        if (!$isreply && preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
-          if (!in_array($matches[1], $oldIDArray)) {
-            if (!in_array($twitter_handle, $excludeIDs)) {
-              print_r($toa->post('statuses/retweet/'.$matches[1]));
+        if (!isset($isreply)) {
+          if (preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) {
+            if (!in_array($matches[1], $oldIDArray)) {
+              if (!in_array($twitter_handle, $excludeIDs)) {
+                print_r($toa->post('statuses/retweet/'.$matches[1]));
+              }
             }
+          }
+          else {
+            print_r($toa->post('statuses/update/', array('status' => $urlstring)));
           }
         }
       }
