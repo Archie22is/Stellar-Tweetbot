@@ -65,7 +65,7 @@ function retweet() {
             }
           }
           else {
-            print_r($toa->post('statuses/update/', array('status' => $urlstring)));
+            print_r($toa->post('statuses/update', array('status' => $urlstring)));
           }
         }
       }    
