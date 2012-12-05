@@ -14,3 +14,8 @@ $access_token = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
 $access_token_secret = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
 
 $excludeIDs = array(''); // Insert an ID to exclude. This could be your Twitter handle, so as to not get autoretweeted by your own bot. Separate each ID with a comma.
+
+$list_info = array(
+		   'slug' => '', // list name here
+		   'owner_screen_name', // the name of the bot that retweets things
+		   );

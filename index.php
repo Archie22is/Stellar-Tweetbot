@@ -61,7 +61,11 @@ function retweet() {
               if (!in_array($twitter_handle, $excludeIDs)) {
                 print "Retweet!\n";
                 $rt = $toa->post('statuses/retweet/'.$matches[1]);
-              }
+                if (isset($list_info['slug'])) {
+                  $list_info['screen_name'] = $twitter_handle;
+                  $list = $toa->post('lists/members/create', $list_info);
+                }
+	      }
             }
           }
           else {
