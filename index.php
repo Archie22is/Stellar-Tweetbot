@@ -55,17 +55,14 @@ function retweet() {
           $urlstringparsedpath = $urlstringparsed['path'];
           $urlstringparsedpatharray = explode('/', $urlstringparsedpath);
           $twitter_handle = $urlstringparsedpatharray[1];
-          $tweet_id = $urlstringparsedpatharray[2];
-          if (preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) {
-            if (!in_array($matches[1], $oldIDArray)) {
-              if (!in_array($twitter_handle, $excludeIDs)) {
-                print "Retweet!\n";
-                $rt = $toa->post('statuses/retweet/'.$matches[1]);
-                if (isset($list_info['slug'])) {
-                  $list_info['screen_name'] = $twitter_handle;
-                  $list = $toa->post('lists/members/create', $list_info);
-                }
-	      }
+          if ($urlstringparsedpatharray[2] == 'status') {
+            $tweet_id = $urlstringparsedpatharray[3];
+            if (!in_array($twitter_handle, $excludeIDs)) {
+              $rt = $toa->post('statuses/retweet/' . $tweet_id);
+              if (isset($list_info['slug'])) {
+                $list_info['screen_name'] = $twitter_handle;
+                $list = $toa->post('lists/members/create', $list_info);
+              }
             }
           }
           else {
