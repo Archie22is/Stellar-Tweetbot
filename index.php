@@ -22,10 +22,7 @@ function getOldIDs () {
 
   foreach($oldxml->entry as $entry) {
     if ($entry->link->attributes()->href) {
-      $urlstring = (string)$entry->link->attributes()->href;
-      if (preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
-        array_push($oldIDs, $matches[1]);
-      }
+      array_push($oldIDs, $entry->link->attributes()->href);
     }
   }
   return $oldIDs;
@@ -55,26 +52,26 @@ function retweet() {
           $urlstringparsedpath = $urlstringparsed['path'];
           $urlstringparsedpatharray = explode('/', $urlstringparsedpath);
           $twitter_handle = $urlstringparsedpatharray[1];
-          if ($urlstringparsedpatharray[2] == 'status') {
-            $tweet_id = $urlstringparsedpatharray[3];
-            if (!in_array($twitter_handle, $excludeIDs)) {
-              $rt = $toa->post('statuses/retweet/' . $tweet_id);
-              if (isset($list_info['slug'])) {
-                $list_info['screen_name'] = $twitter_handle;
-                $list = $toa->post('lists/members/create', $list_info);
-              }
+          if (!in_array($twitter_handle, $excludeIDs) && !in_array($urlstring, $oldIDArray)) {
+            if ($urlstringparsedpatharray[2] == 'status') {
+              $tweet_id = $urlstringparsedpatharray[3];
+                $rt = $toa->post('statuses/retweet/' . $tweet_id);
+	              if (isset($list_info['slug'])) {
+                   $list_info['screen_name'] = $twitter_handle;
+                   $list = $toa->post('lists/members/create', $list_info);
+                }
+            }
+            else {
+              print_r($toa->post('statuses/update', array('status' => $urlstring)));
             }
           }
-          else {
-            print_r($toa->post('statuses/update', array('status' => $urlstring)));
-          }
         }
-      }    
+      }
     }
   }
   $handle = fopen($cached_file_path, 'w');
   fwrite($handle,$feedcontents);
-  fclose($handle);  
+  fclose($handle);
 }
 
 retweet();
