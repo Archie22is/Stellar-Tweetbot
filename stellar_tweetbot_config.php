@@ -19,3 +19,6 @@ $list_info = array(
 		   'slug' => '', // list name here
 		   'owner_screen_name', // the name of the bot that retweets things
 		   );
+       
+$flickr_api_key = "{GET_THIS_FROM_FLICKR_API_DOCUMENTATION}";
+$flickr_api_secret = "{GET_THIS_FROM_FLICKR_API_DOCUMENTATION}"

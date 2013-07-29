@@ -31,7 +31,7 @@ function getOldIDs () {
 // This function looks for new tweets and retweets them out
 function retweet() {
 
-  global $consumer_key, $consumer_secret, $access_token, $access_token_secret, $feed_urls, $cached_file_path, $excludeIDs;
+  global $consumer_key, $consumer_secret, $access_token, $access_token_secret, $feed_urls, $cached_file_path, $excludeIDs, $flickr_api_key, $flickr_api_secret;
   foreach($feed_urls as $feed_url) {
     $toa = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
@@ -62,7 +62,21 @@ function retweet() {
                 }
             }
             else {
-              print_r($toa->post('statuses/update', array('status' => $urlstring)));
+              $url = parse_url($urlstring);
+              $tweet = $urlstring;
+              if ($url['host'] == 'flickr.com') {
+                $path = explode('/', $url['path']);
+                $flickr_user = $path[2];
+                $flickr_photo = $path[3];
+                require_once('phpFlickr/phpFlickr.php');
+                $f = new phpFlickr($flickr_api_key, $flickr_api_secret, TRUE);
+                $user = $f->people_getInfo($flickr_user);
+                $flickr_photo_info = $f->photos_getInfo($flickr_photo);
+                $title = wordwrap($flickr_photo_info['photo']['title'], 117);
+                $urlstring = "http://www.flickr.com/photos/" . $user['path_alias'] . '/' . $flickr_photo . '/';
+                $tweet = $title . ' ' . $urlstring;
+              }
+              print_r($toa->post('statuses/update', array('status' => $tweet)));
             }
           }
         }
